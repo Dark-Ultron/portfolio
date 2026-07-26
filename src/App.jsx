@@ -85,6 +85,19 @@ function App() {
               <span style={{ color: COLORS.textPrimary }}>{value}</span>
             </a>
           ))}
+          <div style={{ ...contactLinkStyle, marginTop: '0.35rem' }}>
+            <span>location</span>
+            <span style={{ opacity: 0.5 }}>→</span>
+            <span style={{ color: COLORS.textPrimary }}>Gurgaon, India</span>
+          </div>
+          <div style={{ ...contactLinkStyle, alignItems: 'flex-start' }}>
+            <span>education</span>
+            <span style={{ opacity: 0.5 }}>→</span>
+            <span style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ color: COLORS.textPrimary }}>B.Tech, Information Technology</span>
+              <span style={{ opacity: 0.7, fontSize: '0.72rem' }}>Galgotias College of Engineering</span>
+            </span>
+          </div>
         </div>
       </div>
 

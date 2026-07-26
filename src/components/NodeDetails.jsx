@@ -73,7 +73,23 @@ const NodeDetails = ({ node, onClose }) => {
                         {node.details}
                     </p>
 
-                    {/* Add more details here if available in the node object */}
+                    {node.link && (
+                        <a
+                            href={node.link}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                                display: 'inline-block',
+                                marginTop: '1rem',
+                                fontFamily: FONTS.mono,
+                                fontSize: '0.85rem',
+                                color: COLORS.node.me,
+                                textDecoration: 'none'
+                            }}
+                        >
+                            View repository →
+                        </a>
+                    )}
                 </motion.div>
             )}
         </AnimatePresence>

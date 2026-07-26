@@ -13,7 +13,7 @@
     { "id": "proj5", "label": "TFRS Recommender System", "type": "project", "details": "Personalized recommender system built with TensorFlow Recommenders (TFRS), improving accuracy and enabling scalable end-to-end training and deployment." },
     { "id": "proj6", "label": "Redis Cache Rollover", "type": "project", "details": "Cache rollover mechanism that cut server Redis usage by 2GB per day." },
     { "id": "proj7", "label": "BidAsist Crawler & Parsing", "type": "project", "details": "Spring Boot microservices with RESTful APIs and web scraping for the BidAsist eTender crawling application, plus PDF/CSV parsing with OCR (Tesseract)." },
-    { "id": "proj8", "label": "E-Commerce Microservices", "type": "project", "details": "Personal project: REST microservices architecture for e-commerce functionality. github.com/Dark-Ultron/E-commerce-Microservices" },
+    { "id": "proj8", "label": "E-Commerce Microservices", "type": "project", "details": "Personal project: REST microservices architecture for e-commerce functionality.", "link": "https://github.com/Dark-Ultron/E-commerce-Microservices" },
 
     { "id": "skill1", "label": "Python", "type": "skill", "details": "Core language for ML models, pipelines, and automation." },
     { "id": "skill2", "label": "Vertex AI", "type": "skill", "details": "Model training and deployment on GCP." },
