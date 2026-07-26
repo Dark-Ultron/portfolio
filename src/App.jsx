@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import NeuralNetwork from './components/NeuralNetwork';
 import NodeDetails from './components/NodeDetails';
 import { COLORS, FONTS } from './theme';
+import resumeData from './data/resume.json';
+
+const { location, education } = resumeData.profile;
 
 const LEGEND = [
   { type: 'me', label: 'Me' },
@@ -88,14 +91,14 @@ function App() {
           <div style={{ ...contactLinkStyle, marginTop: '0.35rem' }}>
             <span>location</span>
             <span style={{ opacity: 0.5 }}>→</span>
-            <span style={{ color: COLORS.textPrimary }}>Gurgaon, India</span>
+            <span style={{ color: COLORS.textPrimary }}>{location}</span>
           </div>
           <div style={{ ...contactLinkStyle, alignItems: 'flex-start' }}>
             <span>education</span>
             <span style={{ opacity: 0.5 }}>→</span>
             <span style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ color: COLORS.textPrimary }}>B.Tech, Information Technology</span>
-              <span style={{ opacity: 0.7, fontSize: '0.72rem' }}>Galgotias College of Engineering</span>
+              <span style={{ color: COLORS.textPrimary }}>{education.degree}</span>
+              <span style={{ opacity: 0.7, fontSize: '0.72rem' }}>{education.institution}</span>
             </span>
           </div>
         </div>

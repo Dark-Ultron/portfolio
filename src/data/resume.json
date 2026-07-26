@@ -1,4 +1,11 @@
 {
+  "profile": {
+    "location": "Gurgaon, India",
+    "education": {
+      "degree": "B.Tech, Information Technology",
+      "institution": "Galgotias College of Engineering"
+    }
+  },
   "nodes": [
     { "id": "me", "label": "Nishant Raj", "type": "me", "details": "Machine Learning Engineer" },
 
