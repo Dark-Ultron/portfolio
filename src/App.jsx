@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NeuralNetwork from './components/NeuralNetwork';
 import NodeDetails from './components/NodeDetails';
+import ResumeContent from './components/ResumeContent';
 import { COLORS, FONTS } from './theme';
 import resumeData from './data/resume.json';
 
-const { location, education } = resumeData.profile;
+const { location, education, contacts: CONTACTS } = resumeData.profile;
 
 const LEGEND = [
   { type: 'me', label: 'Me' },
   { type: 'experience', label: 'Experience' },
   { type: 'project', label: 'Project' },
   { type: 'skill', label: 'Skill' },
-];
-
-const CONTACTS = [
-  { label: 'email', value: 'nishantraj1010@gmail.com', href: 'mailto:nishantraj1010@gmail.com' },
-  { label: 'call', value: '+91 9122310490', href: 'tel:+919122310490' },
-  { label: 'linkedin', value: '/in/nishantraj1010', href: 'https://linkedin.com/in/nishantraj1010' },
-  { label: 'github', value: '@Dark-Ultron', href: 'https://github.com/Dark-Ultron' },
-  { label: 'resume', value: 'download PDF', href: '/resume_mle.pdf', download: true },
 ];
 
 const monoLabelStyle = {
@@ -39,8 +32,30 @@ const contactLinkStyle = {
   color: COLORS.textMuted,
 };
 
+// Below this width the layered graph has no room to work (verified broken at
+// 390px, clean at 1000px this session) - render the resume as a normal page
+// instead. Gated here (not CSS) so NeuralNetwork actually unmounts - its
+// render loop runs continuously and shouldn't paint an invisible canvas.
+const NARROW_QUERY = '(max-width: 900px)';
+
+function useIsNarrow() {
+  const [isNarrow, setIsNarrow] = useState(() => window.matchMedia(NARROW_QUERY).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(NARROW_QUERY);
+    const onChange = (e) => setIsNarrow(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return isNarrow;
+}
+
 function App() {
   const [selectedNode, setSelectedNode] = useState(null);
+  const isNarrow = useIsNarrow();
+
+  if (isNarrow) {
+    return <ResumeContent visuallyHidden={false} />;
+  }
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
@@ -133,6 +148,8 @@ function App() {
         node={selectedNode}
         onClose={() => setSelectedNode(null)}
       />
+
+      <ResumeContent visuallyHidden />
     </div>
   );
 }

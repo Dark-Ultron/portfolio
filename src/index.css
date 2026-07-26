@@ -15,16 +15,25 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  overflow: hidden;
 }
 
 #root {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+}
+
+/* Off-screen but present in the DOM - for screen readers and JS-rendering
+   crawlers. The desktop graph is the visible UI; below the mobile breakpoint
+   this same content renders visibly instead (see ResumeContent.jsx). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
 }
 
 button {

@@ -4,7 +4,14 @@
     "education": {
       "degree": "B.Tech, Information Technology",
       "institution": "Galgotias College of Engineering"
-    }
+    },
+    "contacts": [
+      { "label": "email", "value": "nishantraj1010@gmail.com", "href": "mailto:nishantraj1010@gmail.com" },
+      { "label": "call", "value": "+91 9122310490", "href": "tel:+919122310490" },
+      { "label": "linkedin", "value": "/in/nishantraj1010", "href": "https://linkedin.com/in/nishantraj1010" },
+      { "label": "github", "value": "@Dark-Ultron", "href": "https://github.com/Dark-Ultron" },
+      { "label": "resume", "value": "download PDF", "href": "/resume_mle.pdf", "download": true }
+    ]
   },
   "nodes": [
     { "id": "me", "label": "Nishant Raj", "type": "me", "details": "Machine Learning Engineer" },
