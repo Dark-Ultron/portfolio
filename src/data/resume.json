@@ -25,7 +25,7 @@
     { "id": "proj3", "label": "FAISS Review Dashboard", "type": "project", "details": "Optimized similarity search using FAISS to surface mismatches between predicted and reviewed categories for model debugging." },
     { "id": "proj4", "label": "News Relevancy Classifier", "type": "project", "details": "Deep learning classifier for news relevancy, built cross-functionally for downstream business applications." },
     { "id": "proj5", "label": "TFRS Recommender System", "type": "project", "details": "Personalized recommender system built with TensorFlow Recommenders (TFRS), improving accuracy and enabling scalable end-to-end training and deployment." },
-    { "id": "proj6", "label": "Redis Cache Rollover", "type": "project", "details": "Cache rollover mechanism that cut server Redis usage by 2GB per day." },
+    { "id": "proj6", "label": "Redis Cache Rollover", "type": "project", "details": "Cache rollover mechanism that cut server Redis usage by 2GB per day.", "metric": { "value": "2GB/day", "label": "Redis usage cut" } },
     { "id": "proj7", "label": "BidAsist Crawler & Parsing", "type": "project", "details": "Spring Boot microservices with RESTful APIs and web scraping for the BidAsist eTender crawling application, plus PDF/CSV parsing with OCR (Tesseract)." },
     { "id": "proj8", "label": "E-Commerce Microservices", "type": "project", "details": "Personal project: REST microservices architecture for e-commerce functionality.", "link": "https://github.com/Dark-Ultron/E-commerce-Microservices" },
 

@@ -2,6 +2,16 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { COLORS, FONTS } from '../theme';
+import { skillsForProject } from '../data/resumeHelpers';
+
+const chipStyle = {
+    fontFamily: FONTS.mono,
+    fontSize: '0.8rem',
+    color: COLORS.textMuted,
+    border: `1px solid ${COLORS.hairline}`,
+    borderRadius: '999px',
+    padding: '0.2rem 0.6rem',
+};
 
 const NodeDetails = ({ node, onClose }) => {
     return (
@@ -60,7 +70,7 @@ const NodeDetails = ({ node, onClose }) => {
                         borderRadius: '999px',
                         fontFamily: FONTS.mono,
                         fontSize: '0.75rem',
-                        marginBottom: '2rem',
+                        marginBottom: '1.25rem',
                         backgroundColor: COLORS.hairline,
                         color: COLORS.textMuted,
                         textTransform: 'uppercase',
@@ -69,9 +79,28 @@ const NodeDetails = ({ node, onClose }) => {
                         {node.type}
                     </div>
 
+                    {node.metric && (
+                        <div style={{ marginBottom: '1.25rem' }}>
+                            <span style={{ fontFamily: FONTS.display, fontWeight: 600, fontSize: '2rem', color: COLORS.node.me }}>
+                                {node.metric.value}
+                            </span>
+                            <span style={{ fontFamily: FONTS.mono, fontSize: '0.85rem', color: COLORS.textMuted, marginLeft: '0.6rem' }}>
+                                {node.metric.label}
+                            </span>
+                        </div>
+                    )}
+
                     <p style={{ lineHeight: '1.6', fontSize: '1.1rem', color: COLORS.textMuted }}>
                         {node.details}
                     </p>
+
+                    {node.type === 'project' && skillsForProject(node.id).length > 0 && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.25rem' }}>
+                            {skillsForProject(node.id).map((skill) => (
+                                <span key={skill.id} style={chipStyle}>{skill.label}</span>
+                            ))}
+                        </div>
+                    )}
 
                     {node.link && (
                         <a

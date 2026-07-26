@@ -1,19 +1,14 @@
 import React from 'react';
 import resumeData from '../data/resume.json';
 import { COLORS, FONTS } from '../theme';
+import { projectsForExperience, skillsForProject } from '../data/resumeHelpers';
 
-const { profile, nodes, links } = resumeData;
+const { profile, nodes } = resumeData;
 const { location, education, contacts } = profile;
 
 const me = nodes.find((n) => n.type === 'me');
 const experiences = nodes.filter((n) => n.type === 'experience');
 const skills = nodes.filter((n) => n.type === 'skill');
-
-const projectsFor = (expId) =>
-  links
-    .filter((l) => l.target === expId)
-    .map((l) => nodes.find((n) => n.id === l.source))
-    .filter((n) => n?.type === 'project');
 
 // Same content either way - only presentation changes. Hidden: hands the same
 // data to screen readers and JS-rendering crawlers (Google) without disturbing
@@ -67,10 +62,27 @@ const ResumeContent = ({ visuallyHidden }) => {
           <h3 style={styles.h3}>{exp.label}</h3>
           <p style={styles.p}>{exp.details}</p>
           <ul style={styles.list}>
-            {projectsFor(exp.id).map((proj) => (
+            {projectsForExperience(exp.id).map((proj) => (
               <li key={proj.id} style={styles.projectItem}>
                 <strong>{proj.label}</strong>
+                {proj.metric && (
+                  <div>
+                    <span style={{ fontFamily: FONTS.display, fontWeight: 600, fontSize: '1.1rem', color: COLORS.node.me }}>
+                      {proj.metric.value}
+                    </span>
+                    <span style={{ fontSize: '0.8rem', color: COLORS.textMuted, marginLeft: '0.5rem' }}>
+                      {proj.metric.label}
+                    </span>
+                  </div>
+                )}
                 <p style={styles.p}>{proj.details}</p>
+                {skillsForProject(proj.id).length > 0 && (
+                  <ul style={{ ...styles.skillList, marginTop: '0.5rem' }}>
+                    {skillsForProject(proj.id).map((skill) => (
+                      <li key={skill.id} style={styles.skillChip}>{skill.label}</li>
+                    ))}
+                  </ul>
+                )}
                 {proj.link && <a href={proj.link} style={styles.link}>View repository →</a>}
               </li>
             ))}
