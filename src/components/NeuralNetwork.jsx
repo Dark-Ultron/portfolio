@@ -31,8 +31,24 @@ const getLabelPlacement = (node) => {
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Page-load reveal: one wave per layer (skills first, "me" last), tracing the
+// same forward-propagation direction as the particle animation. Read every
+// frame off Date.now() rather than driven by React state - autoPauseRedraw
+// already keeps the canvas repainting continuously for the "me" pulse, so
+// this rides that same loop for free. Starts once the camera has settled
+// (see readyRef below) rather than at raw mount - react-force-graph-2d does
+// its own initial auto-fit that the resetView effect already overrides after
+// 300ms, and until that fires, nodes past the skill column sit outside its
+// auto-fit framing regardless of any reveal logic here.
+const REVEAL_LAYER_DELAY = 90;
+const REVEAL_DURATION = 380;
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
 const NeuralNetwork = ({ onNodeClick }) => {
   const graphRef = useRef();
+  const hoveredNodeRef = useRef(null);
+  const readyRef = useRef(false);
+  const revealStartRef = useRef(0);
   // Computed once - doesn't need to react to a mid-session OS preference change.
   const reducedMotion = useMemo(prefersReducedMotion, []);
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
@@ -76,6 +92,19 @@ const NeuralNetwork = ({ onNodeClick }) => {
     return { nodes: positioned, links: [...links, ...ghostLinks] };
   }, [dimensions, reducedMotion]);
 
+  // Adjacency for hover-highlight, built from the real links only (ghost
+  // links are the same edges reversed, so they'd add nothing here).
+  const linksByNode = useMemo(() => {
+    const map = new Map();
+    resumeData.links.forEach(({ source, target }) => {
+      if (!map.has(source)) map.set(source, new Set());
+      if (!map.has(target)) map.set(target, new Set());
+      map.get(source).add(target);
+      map.get(target).add(source);
+    });
+    return map;
+  }, []);
+
   // Node x/y were computed to map 1:1 onto this canvas (see graphData above),
   // so center on the canvas midpoint at zoom 1 rather than zoomToFit - fitting
   // would rescale the intentional layout and push nodes under the hero text.
@@ -85,7 +114,12 @@ const NeuralNetwork = ({ onNodeClick }) => {
   };
 
   useEffect(() => {
-    const t = setTimeout(resetView, 300);
+    readyRef.current = false;
+    const t = setTimeout(() => {
+      resetView();
+      revealStartRef.current = Date.now();
+      readyRef.current = true;
+    }, 300);
     return () => clearTimeout(t);
   }, [graphData]);
 
@@ -98,8 +132,15 @@ const NeuralNetwork = ({ onNodeClick }) => {
       cooldownTicks={0}
       autoPauseRedraw={false}
       nodeLabel="label"
-      linkColor={(link) => (link.__ghost ? 'rgba(0,0,0,0)' : COLORS.link)}
+      linkColor={(link) => {
+        if (link.__ghost) return 'rgba(0,0,0,0)';
+        const hovered = hoveredNodeRef.current;
+        if (!hovered) return COLORS.link;
+        const touchesHovered = link.source.id === hovered.id || link.target.id === hovered.id;
+        return touchesHovered ? COLORS.linkHighlight : COLORS.linkDim;
+      }}
       linkWidth={1}
+      onNodeHover={(node) => { hoveredNodeRef.current = node; }}
       linkDirectionalParticles={reducedMotion ? 0 : 1}
       linkDirectionalParticleSpeed={0.004}
       linkDirectionalParticleWidth={(link) => (link.__ghost ? 2 : 3)}
@@ -112,9 +153,33 @@ const NeuralNetwork = ({ onNodeClick }) => {
       }}
       onBackgroundClick={resetView}
       nodeCanvasObject={(node, ctx, globalScale) => {
-        const r = getNodeRadius(node);
+        // Nothing to draw correctly until the camera has settled onto the
+        // real layout (see readyRef above) - draw calls before that would
+        // just show nodes in the library's own, unrelated initial framing.
+        if (!readyRef.current) {
+          node.__nodeRadius = 0;
+          return;
+        }
+
+        // Page-load reveal progress: 0 when the camera settles, 1 once this
+        // node's layer-staggered fade+grow finishes. Reduced motion skips
+        // straight to 1.
+        const layerIndex = LAYER_ORDER.indexOf(node.type);
+        const elapsed = Date.now() - revealStartRef.current;
+        const reveal = reducedMotion
+          ? 1
+          : Math.min(1, Math.max(0, (elapsed - layerIndex * REVEAL_LAYER_DELAY) / REVEAL_DURATION));
+        const revealEased = easeOutCubic(reveal);
+
+        // Hover-highlight: dim everything not touching the hovered node.
+        const hovered = hoveredNodeRef.current;
+        const isDimmed = hovered && hovered.id !== node.id && !linksByNode.get(hovered.id)?.has(node.id);
+
+        const r = getNodeRadius(node) * revealEased;
         const color = getNodeColor(node);
         const isMe = node.type === 'me';
+
+        ctx.globalAlpha = (isDimmed ? 0.15 : 1) * revealEased;
 
         ctx.beginPath();
         ctx.arc(node.x, node.y, r, 0, 2 * Math.PI, false);
@@ -155,6 +220,7 @@ const NeuralNetwork = ({ onNodeClick }) => {
           ctx.fillText(node.label, node.x, node.y + r + 4);
         }
 
+        ctx.globalAlpha = 1;
         node.__nodeRadius = r; // reused in nodePointerAreaPaint
       }}
       nodePointerAreaPaint={(node, color, ctx) => {

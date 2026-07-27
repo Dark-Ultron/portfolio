@@ -4,7 +4,7 @@ import { COLORS, FONTS } from '../theme';
 import { projectsForExperience, skillsForProject } from '../data/resumeHelpers';
 
 const { profile, nodes } = resumeData;
-const { location, education, contacts } = profile;
+const { summary, location, education, contacts } = profile;
 
 const me = nodes.find((n) => n.type === 'me');
 const experiences = nodes.filter((n) => n.type === 'experience');
@@ -43,6 +43,7 @@ const ResumeContent = ({ visuallyHidden }) => {
     <section className={visuallyHidden ? 'sr-only' : undefined} style={styles.page} aria-label="Resume">
       <h1 style={styles.h1}>{me.label}</h1>
       <p style={styles.role}>{me.details}</p>
+      <p style={{ ...styles.p, maxWidth: '520px', marginTop: '0.75rem' }}>{summary}</p>
 
       <div style={styles.meta}>
         <div>{location}</div>

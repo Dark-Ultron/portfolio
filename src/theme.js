@@ -17,6 +17,10 @@ export const COLORS = {
   textMuted: '#8C877E',
   hairline: 'rgba(237,232,224,0.08)',
   link: 'rgba(124,143,163,0.18)',
+  // Hover-highlight variants of the same link color: dimmed for unrelated
+  // links, brightened for links touching the hovered node.
+  linkDim: 'rgba(124,143,163,0.03)',
+  linkHighlight: 'rgba(124,143,163,0.55)',
   node: NODE_COLORS,
   particle: {
     // Forward pass (skill -> ... -> me): cool, matches the link/node ramp.

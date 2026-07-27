@@ -5,7 +5,7 @@ import ResumeContent from './components/ResumeContent';
 import { COLORS, FONTS } from './theme';
 import resumeData from './data/resume.json';
 
-const { location, education, contacts: CONTACTS } = resumeData.profile;
+const { summary, location, education, contacts: CONTACTS } = resumeData.profile;
 
 const LEGEND = [
   { type: 'me', label: 'Me' },
@@ -77,6 +77,17 @@ function App() {
         </h1>
         <p style={{ ...monoLabelStyle, fontSize: '0.9rem', margin: '0.5rem 0 0 0' }}>
           Machine Learning Engineer
+        </p>
+        <p style={{
+          fontFamily: FONTS.mono,
+          fontSize: '0.85rem',
+          color: COLORS.textMuted,
+          maxWidth: '320px',
+          lineHeight: 1.6,
+          marginTop: '1rem',
+          marginBottom: 0,
+        }}>
+          {summary}
         </p>
         <p style={{
           fontFamily: FONTS.mono,
