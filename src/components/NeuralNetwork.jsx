@@ -62,13 +62,12 @@ const NeuralNetwork = ({ onNodeClick }) => {
   }, []);
 
   const graphData = useMemo(() => {
-    // Clears the hero text block horizontally: skill labels are drawn to the
-    // LEFT of their node (see getLabelPlacement), so the widest label ("Label
-    // Studio", ~86px) needs its own left edge past the hero's right edge
-    // (measured ~352px) - not just the node dot itself. 480 leaves ~27px of
-    // clearance; rows that fall within the hero's vertical range no longer
-    // overlap it since the label text itself stays clear.
-    const leftMargin = 480;
+    // Clears the hero card horizontally: skill labels are drawn to the LEFT
+    // of their node (see getLabelPlacement), so the widest label ("Label
+    // Studio", ~86px) needs its own left edge past the hero card's right edge
+    // (measured ~410px, including its padding/border) - not just the node
+    // dot itself. 540 leaves ~29px of clearance.
+    const leftMargin = 540;
     const rightMargin = 160;
     const topMargin = 160; // clears the hero text block
     const bottomMargin = 60;

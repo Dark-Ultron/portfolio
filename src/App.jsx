@@ -64,7 +64,16 @@ function App() {
         top: '2rem',
         left: '2rem',
         zIndex: 10,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        // Frosted backdrop so node labels sliding underneath during the
+        // click-zoom (or the load-time reveal) read as a separate, blurred
+        // layer instead of interleaving with this text.
+        background: COLORS.scrimBg,
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: `1px solid ${COLORS.hairline}`,
+        borderRadius: '10px',
+        padding: '1.5rem 1.75rem',
       }}>
         <h1 style={{
           fontFamily: FONTS.display,

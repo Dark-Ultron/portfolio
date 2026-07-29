@@ -13,6 +13,9 @@ const NODE_COLORS = {
 export const COLORS = {
   bg: '#0E0D0C',
   panelBg: 'rgba(15,13,12,0.94)',
+  // Lighter than panelBg - a frosted backdrop for text that floats directly
+  // over the canvas (hero block), not a fully opaque slide-in surface.
+  scrimBg: 'rgba(14,13,12,0.6)',
   textPrimary: '#EDE8E0',
   textMuted: '#8C877E',
   hairline: 'rgba(237,232,224,0.08)',
