@@ -33,6 +33,7 @@ const NodeDetails = ({ node, onClose }) => {
                         borderLeft: `1px solid ${COLORS.hairline}`,
                         padding: '2rem',
                         boxSizing: 'border-box',
+                        overflowY: 'auto',
                         zIndex: 100,
                         color: COLORS.textPrimary
                     }}
