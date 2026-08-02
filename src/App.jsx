@@ -37,7 +37,7 @@ const contactLinkStyle = {
 // render the resume as a normal page instead. Gated here (not CSS) so
 // NeuralNetwork actually unmounts - its render loop runs continuously and
 // shouldn't paint an invisible canvas.
-const NARROW_QUERY = '(max-width: 1280px)';
+const NARROW_QUERY = '(max-width: 1100px)';
 
 function useIsNarrow() {
   const [isNarrow, setIsNarrow] = useState(() => window.matchMedia(NARROW_QUERY).matches);

@@ -80,8 +80,15 @@ const NeuralNetwork = ({ onNodeClick }) => {
       const layerNodes = resumeData.nodes.filter((n) => n.type === type);
       const rowGap = usableHeight / (layerNodes.length + 1);
       const x = leftMargin + columnGap * layerIndex;
+      // Per-layer vertical stagger: with 11 projects and 3 experience nodes,
+      // rowGap_experience is exactly 3x rowGap_project at every viewport size
+      // (12/4 = 3), so without this offset a project row and an experience
+      // row land on the identical y at every width - not a narrow-viewport
+      // issue, a permanent one. Offsetting each layer's baseline breaks that
+      // coincidence regardless of node counts or viewport size.
+      const layerYOffset = layerIndex * 20;
       layerNodes.forEach((node, i) => {
-        const y = topMargin + rowGap * (i + 1);
+        const y = topMargin + layerYOffset + rowGap * (i + 1);
         positioned.push({ ...node, x, y, fx: x, fy: y });
       });
     });
