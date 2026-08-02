@@ -32,11 +32,12 @@ const contactLinkStyle = {
   color: COLORS.textMuted,
 };
 
-// Below this width the layered graph has no room to work (verified broken at
-// 390px, clean at 1000px this session) - render the resume as a normal page
-// instead. Gated here (not CSS) so NeuralNetwork actually unmounts - its
-// render loop runs continuously and shouldn't paint an invisible canvas.
-const NARROW_QUERY = '(max-width: 900px)';
+// Below this width the layered graph's project/experience column labels
+// collide (usableWidth leaves too little columnGap for the longer labels) -
+// render the resume as a normal page instead. Gated here (not CSS) so
+// NeuralNetwork actually unmounts - its render loop runs continuously and
+// shouldn't paint an invisible canvas.
+const NARROW_QUERY = '(max-width: 1280px)';
 
 function useIsNarrow() {
   const [isNarrow, setIsNarrow] = useState(() => window.matchMedia(NARROW_QUERY).matches);
